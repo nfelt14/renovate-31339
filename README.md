@@ -1,17 +1,33 @@
-# minimal-reproduction-template
+# 31339
 
-First, read the [Renovate minimal reproduction instructions](https://github.com/renovatebot/renovate/blob/main/docs/development/minimal-reproductions.md).
-
-Then replace the current `h1` with the Renovate Issue/Discussion number.
+Reproduction for [Renovate discussion 31339](https://github.com/renovatebot/renovate/discussions/31339)
 
 ## Current behavior
 
-Explain the current behavior here.
+Renovate currently skips updating Python packages in the poetry manager that have multiple version requirements.
+
+Sample dependency
+
+```toml
+[tool.poetry.dependencies]
+numpy = [
+  {python = "^3.9", version = "^1.26"},
+  {python = "^3.8, <3.12", version = "^1.24"}
+]
+```
+
+Renovate log output:
+```
+  {
+    "datasource": "pypi",
+    "skipReason": "multiple-constraint-dep",
+    "depName": "numpy",
+    "depType": "dependencies",
+    "updates": [],
+    "packageName": "numpy"
+  },
+```
 
 ## Expected behavior
 
-Explain the expected behavior here.
-
-## Link to the Renovate issue or Discussion
-
-Put your link to the Renovate issue or Discussion here.
+Renovate should update both constraints of the Python package based on the python version requirements.
